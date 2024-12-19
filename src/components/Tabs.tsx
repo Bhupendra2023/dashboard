@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 
 interface TabProps {
@@ -15,8 +16,14 @@ const Tab: React.FC<TabProps> = ({ name, label, isActive, onClick }) => {
     >
       <p>{label}</p>
       <div
-        className={`absolute h-[2px] w-full top-full ${isActive ? "bg-gray-300" : "bg-secondary"} ${isActive && name === "myAccount" ? "left-0" : "right-0"}`}
-      />
+        className={clsx(
+          "absolute h-[2px] w-full top-full bg-secondary",
+          {
+            "bg-gray-500": isActive,
+            "left-0": isActive && name === "myAccount",
+            "right-0": !(isActive && name === "myAccount"),
+          }
+        )} />
     </div>
   );
 };

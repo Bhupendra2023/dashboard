@@ -12,10 +12,9 @@ export interface SidebarItemComponentProps {
   handleSubMenuToggle: (label: string) => void;
 }
 
-import { IconType } from "react-icons";
 
 export interface SidebarItem {
   id: number;
-  icon?: IconType;
+  icon?: string;
   active: boolean;
 }

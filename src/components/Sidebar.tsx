@@ -1,18 +1,5 @@
 'use client'
 import { SidebarItem } from "@/lib/types";
-import {
-  FaHome,
-  FaImages,
-  FaLayerGroup,
-  FaThLarge,
-  FaUserFriends,
-  FaEnvelope,
-  FaTools,
-  FaChartBar,
-  FaInfinity,
-} from "react-icons/fa";
-import { IconType } from "react-icons";
-
 import { cn } from "@/lib/utils";
 import { FiSearch } from "react-icons/fi";
 import { useState } from "react";
@@ -20,20 +7,22 @@ import { useState } from "react";
 
 
 const sidebarItems: SidebarItem[] = [
-  { id: 1, icon: FaHome, active: false },
-  { id: 2, icon: FaImages, active: true },
-  { id: 3, icon: FaLayerGroup, active: false },
-  { id: 4, icon: FaThLarge, active: false },
-  { id: 5, icon: FaUserFriends, active: false },
-  { id: 6, icon: FaEnvelope, active: false },
-  { id: 7, icon: FaTools, active: false },
-  { id: 8, icon: FaChartBar, active: false },
-  { id: 9, icon: FaInfinity, active: false },
+  { id: 1, icon: 'FaHome', active: false },
+  { id: 2, icon: 'FaImages', active: true },
+  { id: 3, icon: 'FaLayerGroup', active: false },
+  { id: 4, icon: 'FaThLarge', active: false },
+  { id: 5, icon: 'FaUserFriends', active: false },
+  { id: 6, icon: 'FaEnvelope', active: false },
+  { id: 7, icon: 'FaTools', active: false },
+  { id: 8, icon: 'FaChartBar', active: false },
 ];
 
 
 import * as Icons from "react-icons/ai"; // Import all Ai icons
+import * as faIcons from "react-icons/fa"; // Import all Ai icons
 import Tabs from "./Tabs";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 // Define types for the data
 
@@ -41,14 +30,14 @@ interface SidebarSection {
   name: string;
   icon?: string;
   href: string;
-  items?: SidebarItem[];
+  items?: SidebarSection[];
 }
 
 interface SidebarData {
   sections: SidebarSection[];
 }
 
-const sidebarData: any = {
+const sidebarData: SidebarData = {
   sections: [
     { name: "Home", icon: "AiOutlineHome", href: "/home" },
     { name: "Dashboard", icon: "AiOutlineDashboard", href: "/dashboard" },
@@ -83,17 +72,34 @@ export default function Sidebar() {
     const Icon = (Icons as Record<string, React.ElementType>)[iconName];
     return Icon ? <Icon className="text-lg mr-2" /> : null;
   };
+  const renderFaIcon = (iconName: string) => {
+    const Icon = (faIcons as Record<string, React.ElementType>)[iconName];
+    return Icon ? <Icon className="text-lg" /> : null;
+  };
+
+  const pathname = usePathname()
+
+  const handleToggleSidebar = () => {
+    setToggleSidebar((prev) => !prev);
+  };
+
 
   return (
-    <aside className="bg-background shadow-lg flex  gap-3 ">
-      <div className="w-20 border-[#333] border-r-[1px] h-full">
-        <div className="px-4 py-6" onClick={() => setToggleSidebar((prev) => prev = !prev)}>Icon</div>
-        <div className="flex gap-2 flex-col  px-4 py-4">
+    <aside className="bg-background shadow-lg flex">
+      <div className="w-18  h-full flex  items-center flex-col ">
+
+        <button
+          className="px-4 py-6 text-black  rounded-full "
+          onClick={handleToggleSidebar}
+        >
+          {toggleSidebar ? <faIcons.FaTimes size={24} /> : <faIcons.FaBars size={24} />}
+        </button>
+        <div className="flex flex-col   gap-2 py-4 ">
           {sidebarItems.map((item: any, index: any) => {
             return <div key={item.id}
-              className={cn("flex items-center  p-2 rounded-md text-heading hover:bg-gray-200 cursor-pointer")}
+              className={"flex items-center  hover:scale-[1.05] justify-center p-2 rounded-md text-heading hover:bg-secondary cursor-pointer"}
             >
-              <item.icon className="h-6 w-6 cursor-pointer hover:bg-gray-400 rounded-sm" />
+              {renderFaIcon(item.icon)}
             </div>
           })}
         </div>
@@ -110,7 +116,7 @@ export default function Sidebar() {
           <input
             type="text"
             placeholder="Search"
-            className="pl-10 pr-4 py-2 rounded-lg  outline-none"
+            className="pl-10 pr-4 py-2 rounded-lg  bg-primary outline-none"
           />
           <FiSearch className="absolute left-3 top-3 text-heading" />
         </div>
@@ -130,7 +136,7 @@ export default function Sidebar() {
                 {!section.items ? (
                   <a
                     href={section.href}
-                    className="flex items-center px-4 py-2 hover:bg-primary rounded"
+                    className={cn("flex items-center px-4 py-2 hover:bg-secondary rounded", pathname === section.href && 'bg-secondary')}
                   >
                     {renderIcon(section.icon)}
                     {section.name}
@@ -138,7 +144,7 @@ export default function Sidebar() {
                 ) : (
                   <div>
                     <div
-                      className="flex items-center justify-between px-4 py-2 hover:bg-primary rounded cursor-pointer"
+                      className="flex items-center justify-between px-4 py-2 hover:bg-secondary rounded cursor-pointer"
                       onClick={() => toggleSection(section.name)}
                     >
                       <div className="flex items-center">
@@ -148,18 +154,21 @@ export default function Sidebar() {
                       <span className="text-xl">{openSection === section.name ? "-" : "+"}</span>
                     </div>
                     {openSection === section.name && (
-                      <ul className="ml-4 mt-2 ">
-                        {section.items.map((item: any) => (
-                          <li key={item.name} className="border-l  relative">
+                      <ul className="flex gap-3 flex-col ">
+                        {section.items.map((item: any, index: number) => (
+                          <li key={item.name} className=" relative">
                             <div
-                              className="absolute bottom-0 left-3 top-[-4px] transform -translate-x-1/2 w-6 h-6 border-b-2  border-gray-400 rounded-bl-md">
+                              className="absolute bottom-0 left-8 top-[-8px]  z-30 transform -translate-x-1/2 w-6 h-8 border-b-2  border-gray-400 rounded-bl-md">
                             </div>
-                            <a
+                            {section.items.length - 1 !== index && <div
+                              className="absolute bottom-0 left-8 top-[6px] z-30 border-l-2 transform -translate-x-1/2 w-6 h-[69px] border-gray-400 ">
+                            </div>}
+                            <Link
                               href={item.href}
-                              className="flex items-center pl-10 pr-4 py-2 hover:bg-gray-700 rounded"
+                              className={cn("flex items-center ml-[60px] p-4 py-2 hover:bg-secondary rounded", pathname === item.href && 'bg-secondary')}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>

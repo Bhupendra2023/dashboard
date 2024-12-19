@@ -10,12 +10,12 @@ body {
   --bg-color: #ffffff;
   --text-color: #1a1a1a;
   --primary-color: #F4F4F6;
-  --secondary-color: #46454A;
+  --secondary-color: #F4F4F6;
 }
 
-[data-theme="dark"] {
+.dark{
   --bg-color: #18171C;
   --text-color: #ffffff;
-  --primary-color: #18171C;
+  --primary-color: #1c1b21;
   --secondary-color: #46454A
 }

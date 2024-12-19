@@ -15,8 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-background">
-        <ThemeProvider attribute="data-theme" defaultTheme="light">
+      <body className="">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Layout>{children}</Layout>
         </ThemeProvider>
       </body>
