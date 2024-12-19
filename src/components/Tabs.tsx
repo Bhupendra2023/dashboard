@@ -17,7 +17,7 @@ const Tab: React.FC<TabProps> = ({ name, label, isActive, onClick }) => {
       <p>{label}</p>
       <div
         className={clsx(
-          "absolute h-[2px] w-full top-full bg-secondary",
+          "absolute h-[2px] w-full top-full ",
           {
             "bg-gray-500": isActive,
             "left-0": isActive && name === "myAccount",

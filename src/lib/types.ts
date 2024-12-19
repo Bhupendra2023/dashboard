@@ -1,10 +1,8 @@
-// export type SidebarItem = {
-//   label: string;
-//   icon: React.ReactNode;
-//   href?: string;
-//   subItems?: SidebarItem[];
-// };
-
+export type SidebarItem = {
+  id: number;
+  icon: string;
+  active: boolean;
+};
 export interface SidebarItemComponentProps {
   item: SidebarItem;
   collapsed: boolean;
@@ -12,9 +10,33 @@ export interface SidebarItemComponentProps {
   handleSubMenuToggle: (label: string) => void;
 }
 
-
-export interface SidebarItem {
-  id: number;
+export type SidebarSectionType = {
+  name: string;
   icon?: string;
-  active: boolean;
-}
+  href: string;
+  items?: SidebarSectionType[];
+};
+
+export type SidebarDataType = {
+  sections: SidebarSectionType[];
+};
+
+export type SidebarToggleProps = {
+  toggleSidebar: boolean;
+  handleToggleSidebar: () => void;
+  theme: string | undefined;
+};
+
+export type SidebarItemIconProps = {
+  iconName: string;
+  library: Record<string, React.ElementType>;
+  isShowMargin?: boolean
+};
+
+export type SidebarSectionProps = {
+  section: SidebarSectionType;
+  openSection: string | null;
+  toggleSection: (sectionName: string) => void;
+  pathname: string;
+};
+

@@ -1,4 +1,5 @@
 'use client'
+import { DARK, LIGHT, SYSTEM } from '@/constants';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { CiLight } from "react-icons/ci";
@@ -12,13 +13,13 @@ const ThemeToggle = () => {
 
   if (!mounted) return null;
 
-  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const currentTheme = theme === SYSTEM ? systemTheme : theme;
 
   return (
     <button
-      onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
+      onClick={() => setTheme(currentTheme === DARK ? LIGHT : DARK)}
     >
-      {currentTheme === 'dark' ? (
+      {currentTheme === DARK ? (
         <CiLight
           size={20}
           color='white'

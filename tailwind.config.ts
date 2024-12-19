@@ -8,11 +8,15 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        manrope: ["var(--manrope-font)"],
+      },
       colors: {
         background: "var(--bg-color)",
         heading: "var(--text-color)",
         primary: "var(--primary-color)",
         secondary: "var(--secondary-color)",
+        main: "var(--main-content-color)",
       },
     },
   },
